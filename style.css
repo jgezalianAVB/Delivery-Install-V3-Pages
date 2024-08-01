@@ -1,0 +1,205 @@
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+#delivery_install_table_container,
+#four_piece_kitchen_table_container,
+#laundry_table_container, 
+#laundry_calculator_container {
+  display: flex; /* establish flex container */
+  flex-direction: column; /* stack flex items vertically */
+  justify-content: center; /* center items vertically, in this case */
+  align-items: center; /* center items horizontally, in this case */
+  margin-bottom: 30px;
+}
+
+#delivery_install_delta_tables {
+  margin-bottom: 30px;
+}
+
+#four_piece_kitchen_table,
+#laundry_table,
+#laundry_calculator_table {
+  width: 100%;
+}
+
+#di_header {
+  font-weight: 1000;
+}
+
+#bb_header, #bb_header_laundry {
+  background-color: yellow;
+  font-weight: 1000;
+}
+
+#hd_header {
+  background-color: orange;
+  font-weight: 1000;
+}
+
+#lowes_header {
+  background-color: blue;
+  font-weight: 1000;
+  color: white;
+}
+
+#national_average {
+  font-weight: 1000;
+  background-color: rgb(14, 191, 14);
+}
+
+#dealer_curr,
+#average_curr,
+#dealer_new,
+#average_new {
+  font-weight: 1000;
+  color: whitesmoke;
+  background-color: rgb(233, 59, 59);
+}
+
+.data_table .item_data {
+  background-color: peachpuff;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.data_table .item_data_laundry {
+  background-color: lightblue;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.national_average_td,
+.national_average_td_four_piece,
+.national_average_td_laundry,
+.national_average_td_laundry_calc, 
+.national_average_td_four_piece_laundry_calc {
+  background-color: rgb(14, 191, 14);
+}
+
+.member_input_current_td,
+.member_input_new_td,
+.difference_current_td,
+.difference_current_td_four_piece,
+.difference_new_td_four_piece,
+.difference_new_td,
+.dealers_current_four_piece,
+.dealers_new_four_piece,
+.member_input_current_td_laundry,
+.difference_current_td_laundry,
+.member_input_new_td_laundry, 
+.difference_new_td_laundry,
+.dealers_current_laundry_calc,
+.difference_current_td_laundry_calc,
+.dealers_new_laundry_calc,
+.difference_new_td_laundry_calc {
+  background-color: #ff0;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 1px;
+  text-align: center;
+}
+
+.data_table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.data_table td {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+.data_table th {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+#delivery_install_delta_tables, #laundry_delta_tables {
+  border-collapse: collapse;
+  display: flex;
+  flex: row;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+}
+
+.delta_data {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 5px;
+  vertical-align: middle;
+}
+
+#four_piece_title, #laundry_title, #laundry_calc_title {
+  font-size: larger;
+}
+
+#sum_container {
+  display: flex; /* establish flex container */
+  flex-direction: row; /* stack flex items vertically */
+  justify-content: center; /* center items vertically, in this case */
+  align-items: center; /* center items horizontally, in this case */
+  gap: 75px;
+}
+
+#annualized_sum_current, #annualized_sum_new, #sum_current, #sum_new {
+  font-size: x-large;
+  font-weight: bold;
+  color: red;
+}
+
+#submit {
+  font-size: larger;
+  display: grid; /* establish flex container */
+  flex-direction: column; /* stack flex items vertically */
+  justify-content: center; /* center items vertically, in this case */
+  align-items: center; /* center items horizontally, in this case */
+  height: 30px;
+}
+
+#submit_btn {
+  font-size: larger;
+}
+
+#submit_email {
+  font-size: larger;
+}
+
+#sum_display {
+  margin: 5px;
+  text-align: center;
+  font-size: larger;
+  color: blue;
+}
+
+
+
+#total_sum {
+  color: red;
+  font-size: x-large;
+  width: 600px;
+  margin: 5px;
+  text-align: center;
+}
+
