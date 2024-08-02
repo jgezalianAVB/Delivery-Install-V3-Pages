@@ -483,7 +483,7 @@ async function deliveryInstallSetup() {
     "four_piece_delivery",
   ];
   //get delivery install
-  await $.getJSON("http://localhost:8080/delivery_install", function (result) {
+  await $.getJSON("https://nodetest-f6jnhptmxa-uc.a.run.app/delivery_install", function (result) {
     const delivery_install_display_data = result;
 
     let data_arr = [];
@@ -838,7 +838,7 @@ async function fourPieceKitchenSetup() {
   ];
   //get delivery install
   await $.getJSON(
-    "http://localhost:8080/four_piece_kitchen",
+    "https://nodetest-f6jnhptmxa-uc.a.run.app/four_piece_kitchen",
     function (result) {
       const four_piece_kitchen_display_data = result;
 
@@ -973,7 +973,7 @@ async function laundrySetup() {
   ];
   //get delivery install
   await $.getJSON(
-    "http://localhost:8080/laundry_delivery_install",
+    "https://nodetest-f6jnhptmxa-uc.a.run.app/laundry_delivery_install",
     function (result) {
       const laundry_display_data = result;
 
@@ -1087,7 +1087,7 @@ async function laundryCalcSetup() {
     "total",
   ];
   //get delivery install
-  await $.getJSON("http://localhost:8080/laundry_calc", function (result) {
+  await $.getJSON("https://nodetest-f6jnhptmxa-uc.a.run.app/laundry_calc", function (result) {
     const laundry_calc_display_data = result;
 
     let data_arr = [];
