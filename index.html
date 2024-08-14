@@ -32,15 +32,15 @@
 		gtag('config', 'G-B9CC699D4M');
 	</script>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="text/javascript">
-	(function () {
-		// https://dashboard.emailjs.com/admin/account
-		emailjs.init({
-			publicKey: "-XUUTaBUEvFv0opAs",
-		});
-	})();
-</script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+	<script type="text/javascript">
+		(function () {
+			// https://dashboard.emailjs.com/admin/account
+			emailjs.init({
+				publicKey: "-XUUTaBUEvFv0opAs",
+			});
+		})();
+	</script>
 </head>
 
 <body>
@@ -57,7 +57,7 @@
 			<col width="10%" />
 			<thead>
 				<tr>
-					<th class="header" id="di_header">Service</td>
+					<th class="header" id="di_header">Kitchen Delivery & Install</td>
 					<th class="header" id="bb_header">Best Buy Price</td>
 					<th class="header" id="hd_header">Home Depot Price</td>
 					<th class="header" id="lowes_header">Lowes Price</td>
@@ -72,9 +72,26 @@
 	</div>
 
 	<div id="four_piece_kitchen_table_container">
-		<p id ="four_piece_title">4 Piece Kitchen Calculator</p>
 		<table class="data_table" id="four_piece_kitchen_table">
+			<thead>
+				<tr>
+					<th class="header" id="di_header">4 Piece Kitchen Calculator</td>
+					<th class="header" id="bb_header">Best Buy Price</td>
+					<th class="header" id="hd_header">Home Depot Price</td>
+					<th class="header" id="lowes_header">Lowes Price</td>
+					<th class="header" id="national_average">National Average</td>
+					<th class="header" id="dealer_curr">Dealer's Current Price</td>
+					<th class="header" id="average_curr">+/- From Average</td>
+					<th class="header" id="dealer_new">Dealer's New Price</td>
+					<th class="header" id="average_new">New +/- From Average</td>
+				</tr>
+			</thead>
 		</table>
+	</div>
+
+	<div id="delivery_install_kitchens_delivered_weekly">
+		<p class="delta_data">Kitchens Delivered Weekly</p>
+		<input class="delta_data" id="delivery_install_kitchens_delivered_weekly_input">
 	</div>
 
 	<div id="delivery_install_delta_tables">
@@ -83,12 +100,7 @@
 				<td class="delta_data">Current Delta From Average</td>
 				<td class="delta_data" id="delivery_install_current_delta"></td>
 			</tr>
-			<tr>
-				<td class="delta_data">Kitchens Delivered Weekly</td>
-				<td class="delta_data">
-					<input class="delta_data" id="delivery_install_kitchens_delivered_weekly">
-				</td>
-			</tr>
+
 			<tr>
 				<td class="delta_data">Annualized</td>
 				<td class="delta_data" id="delivery_install_current_annualized"></td>
@@ -96,32 +108,21 @@
 		</table>
 		<table class="delta_table" id="delivery_install_new_delta_table">
 			<tr>
-				<td class="delta_data">New Delta From Average</td>
+				<td class="delta_data">Difference between Member Current and New Price </td>
 				<td class="delta_data" id="delivery_install_new_delta"></td>
-				<td class="delta_data">Delta From Current Price</td>
-				<td class="delta_data" id="four_piece_delta_from_current_price"></td>
 			</tr>
 			<tr>
-				<td class="delta_data">Kitchens Delivered Weekly</td>
-				<td class="delta_data">
-					<input class="delta_data" id="delivery_install_kitchens_delivered_weekly_new">
-				</td>
-			</tr>
-			<tr>
-				<td class="delta_data">Annualized</td>
+				<td class="delta_data">Annualized Additional Revenue </td>
 				<td class="delta_data" id="delivery_install_new_annualized"></td>
-				<td class="delta_data">Annualized</td>
-				<td class="delta_data" id="delivery_install_delta_from_current_price_annualized"></td>
 			</tr>
 		</table>
 	</div>
 
 	<div id="laundry_table_container">
-		<p id="laundry_title">Laundry Delivery & Install</p>
 		<table class="data_table" id="laundry_table">
 			<thead>
 				<tr>
-					<th id="di_header">Service</td>
+					<th id="di_header">Laundry Delivery & Install</td>
 					<th class="header_laundry" id="bb_header">Best Buy Price</td>
 					<th class="header_laundry" id="hd_header">Home Depot Price</td>
 					<th class="header_laundry" id="lowes_header">Lowes Price</td>
@@ -136,9 +137,27 @@
 	</div>
 
 	<div id="laundry_calculator_container">
-		<p id="laundry_calc_title">Laundry Calculator</p>
 		<table class="data_table" id="laundry_calculator_table">
+			<thead>
+				<tr>
+					<th id="di_header">Laundry Calculator</td>
+					<th class="header_laundry" id="bb_header">Best Buy Price</td>
+					<th class="header_laundry" id="hd_header">Home Depot Price</td>
+					<th class="header_laundry" id="lowes_header">Lowes Price</td>
+					<th class="header_laundry" id="national_average">National Average</td>
+					<th class="header_laundry" id="dealer_curr">Dealer's Current Price</td>
+					<th class="header_laundry" id="average_curr">+/- From Average</td>
+					<th class="header_laundry" id="dealer_new">Dealer's New Price</td>
+					<th class="header_laundry" id="average_new">New +/- From Average</td>
+				</tr>
+			</thead>
 		</table>
+	</div>
+
+
+	<div id="laundry_pairs_delivered_weekly">
+		<p class="delta_data">Laundry Pairs Delivered Weekly</p>
+		<input class="delta_data" id="laundry_pairs_delivered_weekly_input">
 	</div>
 
 	<div id="laundry_delta_tables">
@@ -148,34 +167,18 @@
 				<td class="delta_data" id="laundry_current_delta"></td>
 			</tr>
 			<tr>
-				<td class="delta_data">Laundry Pairs Delivered Weekly</td>
-				<td class="delta_data">
-					<input class="delta_data" id="laundry_pairs_delivered_weekly">
-				</td>
-			</tr>
-			<tr>
 				<td class="delta_data">Annualized</td>
 				<td class="delta_data" id="laundry_current_annualized"></td>
 			</tr>
 		</table>
 		<table class="delta_table" id="laundry_new_delta_table">
 			<tr>
-				<td class="delta_data">New Delta From Average</td>
+				<td class="delta_data">Difference between Member Current and New Price </td>
 				<td class="delta_data" id="laundry_new_delta"></td>
-				<td class="delta_data">Delta From Current Price</td>
-				<td class="delta_data" id="laundry_delta_from_current_price"></td>
 			</tr>
 			<tr>
-				<td class="delta_data">Laundry Pairs Delivered Weekly</td>
-				<td class="delta_data">
-					<input class="delta_data" id="laundry_pairs_delivered_weekly_new">
-				</td>
-			</tr>
-			<tr>
-				<td class="delta_data">Annualized</td>
+				<td class="delta_data">Annualized Additional Revenue </td>
 				<td class="delta_data" id="laundry_new_annualized"></td>
-				<td class="delta_data">Annualized</td>
-				<td class="delta_data" id="laundry_delta_from_current_price_annualized"></td>
 			</tr>
 		</table>
 	</div>
@@ -183,16 +186,16 @@
 
 	<div id="sum_container">
 		<p id="annualized_sum_current">
-			Total Current Potential Annualized
-			<p id="sum_current">
-				
-			</p>
+			Total Annualized Delta Between Average and Current Price
+		<p id="sum_current">
+
+		</p>
 		</p>
 		<p id="annualized_sum_new">
-			Total New Potential Annualized
-			<p id="sum_new">
-				
-			</p>
+			Additional Annual Revenue If Updated To Dealer's New Pricing
+		<p id="sum_new">
+
+		</p>
 		</p>
 	</div>
 
