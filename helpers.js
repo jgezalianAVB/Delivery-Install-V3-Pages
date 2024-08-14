@@ -1,5 +1,5 @@
 function cleanPrice(price) {
-  const match_dollar = /\$[0-9]+(\.[0-9][0-9])?/g;
+  const match_dollar = /\$\-*[0-9]+(\.[0-9][0-9])?/g;
   $.trim(price);
   let price_arr = price.match(match_dollar);
   if (price_arr) {
@@ -48,11 +48,11 @@ function populateDifference(member_price_id, difference_id, average) {
 
   //if member inputs 0, difference is just the competitor average
   if (member_input.value == 0) {
-    difference_el.innerText = "$" + average;
+    difference_el.innerText = "$" + "-" + average;
   }
   //if member inputs a non-zero value, difference is competitor average - member input
   if (member_input.value > 0) {
-    let difference = average - member_input.value;
+    let difference = member_input.value - average;
     difference_el.innerText = "$" + difference;
   }
   if (!member_input.value) {
@@ -67,12 +67,12 @@ function populateDifferenceNonInput(member_price_id, difference_id, average) {
 
   //if member inputs 0, difference is just the competitor average
   if (member_price_el.innerText == "$0") {
-    difference_el.innerText = "$" + average;
+    difference_el.innerText = "$" + "-" + average;
   }
 
   //if member inputs a non-zero value, difference is competitor average - member input
   if (cleanPrice(member_price_el.innerText) > 0) {
-    let difference = average - cleanPrice(member_price_el.innerText);
+    let difference = cleanPrice(member_price_el.innerText) - average;
     difference_el.innerText = "$" + difference;
   }
   if (!member_price_el.innerText) {
@@ -469,21 +469,20 @@ function laundryValues(table_display_data, member_prices) {
   return table_display_data;
 }
 
-
 async function deliveryInstallSetup() {
   const services = [
     "delivery_charges",
     "haul_away",
     "otr_install",
     "dw_install",
+    "dw_kit",
     "gas_range_install",
     "electric_range_cord",
-    "dw_kit",
     "h2o_hook_up",
     "four_piece_delivery",
   ];
   //get delivery install
-  await $.getJSON("https://nodetest-f6jnhptmxa-uc.a.run.app/delivery_install", function (result) {
+  await $.getJSON("http://localhost:8080/delivery_install", function (result) {
     const delivery_install_display_data = result;
 
     let data_arr = [];
@@ -664,8 +663,8 @@ async function deliveryInstallSetup() {
 
       four_piece_difference_current.innerText =
         "$" +
-        (national_average_four_piece_delivery -
-          four_piece_member_price_current);
+        (four_piece_member_price_current -
+          national_average_four_piece_delivery);
 
       let four_piece_current_prices_arr = [];
       four_piece_current_prices_arr.push(
@@ -711,25 +710,13 @@ async function deliveryInstallSetup() {
         "delivery_install_current_delta"
       );
 
-      let delivery_install_new_delta = document.getElementById(
-        "delivery_install_new_delta"
-      );
       let total_national_average_four_piece = cleanPrice(
         document.getElementById("total_national_average_four_piece").innerText
       );
       delivery_install_current_delta.innerText =
         "$" +
-        (total_national_average_four_piece -
-          cleanPrice(four_piece_total_current.innerText));
-
-      let four_piece_delta_from_current_price = document.getElementById(
-        "four_piece_delta_from_current_price"
-      );
-
-      four_piece_delta_from_current_price.innerText =
-        "$" +
-        (cleanPrice(delivery_install_current_delta.innerText) -
-          cleanPrice(delivery_install_new_delta.innerText));
+        (cleanPrice(four_piece_total_current.innerText) -
+          total_national_average_four_piece);
     }
   });
 
@@ -798,30 +785,6 @@ async function deliveryInstallSetup() {
           cleanPrice(national_average_cells[i].innerText)
         );
       }
-
-      let delivery_install_new_delta = document.getElementById(
-        "delivery_install_new_delta"
-      );
-      let total_national_average_four_piece = cleanPrice(
-        document.getElementById("total_national_average_four_piece").innerText
-      );
-      delivery_install_new_delta.innerText =
-        "$" +
-        (total_national_average_four_piece -
-          cleanPrice(four_piece_total_new.innerText));
-
-      let delivery_install_current_delta = cleanPrice(
-        document.getElementById("delivery_install_current_delta").innerText
-      );
-
-      let four_piece_delta_from_current_price = document.getElementById(
-        "four_piece_delta_from_current_price"
-      );
-
-      four_piece_delta_from_current_price.innerText =
-        "$" +
-        (delivery_install_current_delta -
-          cleanPrice(delivery_install_new_delta.innerText));
     }
   });
 }
@@ -838,7 +801,7 @@ async function fourPieceKitchenSetup() {
   ];
   //get delivery install
   await $.getJSON(
-    "https://nodetest-f6jnhptmxa-uc.a.run.app/four_piece_kitchen",
+    "http://localhost:8080/four_piece_kitchen",
     function (result) {
       const four_piece_kitchen_display_data = result;
 
@@ -908,7 +871,7 @@ async function fourPieceKitchenSetup() {
       });
 
       let delivery_installed_weekly_input = document.getElementById(
-        "delivery_install_kitchens_delivered_weekly"
+        "delivery_install_kitchens_delivered_weekly_input"
       );
       delivery_installed_weekly_input.addEventListener("input", function () {
         let delivery_install_current_annualized = document.getElementById(
@@ -922,40 +885,64 @@ async function fourPieceKitchenSetup() {
           delivery_installed_weekly_input.value *
           52;
         delivery_install_current_annualized.innerText = "$" + annualized;
-      });
+        let delivery_install_diff_between_member_current_and_new =
+          document.getElementById("delivery_install_new_delta");
 
-      let delivery_installed_weekly_input_new = document.getElementById(
-        "delivery_install_kitchens_delivered_weekly_new"
-      );
-      delivery_installed_weekly_input_new.addEventListener(
-        "input",
-        function () {
-          let delivery_install_new_annualized = document.getElementById(
-            "delivery_install_new_annualized"
-          );
-          let delivery_install_new_delta = cleanPrice(
-            document.getElementById("delivery_install_new_delta").innerText
-          );
-          let annualized =
-            delivery_install_new_delta *
-            delivery_installed_weekly_input_new.value *
-            52;
-          delivery_install_new_annualized.innerText = "$" + annualized;
-
-          let delivery_install_delta_from_current_price_annualized =
-            document.getElementById(
-              "delivery_install_delta_from_current_price_annualized"
-            );
-          let four_piece_delta_from_current_price = cleanPrice(
-            document.getElementById("four_piece_delta_from_current_price")
+        let diff =
+          cleanPrice(
+            document.getElementById("total_member_price_four_piece_new")
+              .innerText
+          ) -
+          cleanPrice(
+            document.getElementById("total_member_price_four_piece_current")
               .innerText
           );
-          delivery_install_delta_from_current_price_annualized.innerText =
-            "$" +
-            four_piece_delta_from_current_price *
-              delivery_installed_weekly_input_new.value;
-        }
-      );
+
+        delivery_install_diff_between_member_current_and_new.innerText =
+          "$" + diff;
+
+        let delivery_install_new_annualized = document.getElementById(
+          "delivery_install_new_annualized"
+        );
+
+        let annualized_addtional_revenue =
+          diff * delivery_installed_weekly_input.value * 52;
+        delivery_install_new_annualized.innerText =
+          "$" + annualized_addtional_revenue;
+      });
+
+      // let delivery_installed_weekly_input_new = document.getElementById(
+      //   "delivery_install_kitchens_delivered_weekly_new"
+      // );
+      // delivery_installed_weekly_input_new.addEventListener(
+      //   "input",
+      //   function () {
+      //     let delivery_install_new_annualized = document.getElementById(
+      //       "delivery_install_new_annualized"
+      //     );
+      //     let delivery_install_new_delta = cleanPrice(
+      //       document.getElementById("delivery_install_new_delta").innerText
+      //     );
+      //     let annualized =
+      //       delivery_install_new_delta *
+      //       delivery_installed_weekly_input_new.value *
+      //       52;
+      //     delivery_install_new_annualized.innerText = "$" + annualized;
+
+      //     let delivery_install_delta_from_current_price_annualized =
+      //       document.getElementById(
+      //         "delivery_install_delta_from_current_price_annualized"
+      //       );
+      //     let four_piece_delta_from_current_price = cleanPrice(
+      //       document.getElementById("four_piece_delta_from_current_price")
+      //         .innerText
+      //     );
+      //     delivery_install_delta_from_current_price_annualized.innerText =
+      //       "$" +
+      //       four_piece_delta_from_current_price *
+      //         delivery_installed_weekly_input_new.value;
+      //   }
+      // );
     }
   );
 }
@@ -973,7 +960,7 @@ async function laundrySetup() {
   ];
   //get delivery install
   await $.getJSON(
-    "https://nodetest-f6jnhptmxa-uc.a.run.app/laundry_delivery_install",
+    "http://localhost:8080/laundry_delivery_install",
     function (result) {
       const laundry_display_data = result;
 
@@ -1087,7 +1074,7 @@ async function laundryCalcSetup() {
     "total",
   ];
   //get delivery install
-  await $.getJSON("https://nodetest-f6jnhptmxa-uc.a.run.app/laundry_calc", function (result) {
+  await $.getJSON("http://localhost:8080/laundry_calc", function (result) {
     const laundry_calc_display_data = result;
 
     let data_arr = [];
@@ -1268,11 +1255,11 @@ async function laundryCalcSetup() {
 
       laundry_current_delta.innerText =
         "$" +
-        (cleanPrice(total_national_average_four_piece_laundry_calc.innerText) -
-          cleanPrice(total_member_price_laundry_calc_current.innerText));
+        (cleanPrice(total_member_price_laundry_calc_current.innerText) -
+          cleanPrice(total_national_average_four_piece_laundry_calc.innerText));
 
       let laundry_pairs_delivered_weekly_input = document.getElementById(
-        "laundry_pairs_delivered_weekly"
+        "laundry_pairs_delivered_weekly_input"
       );
       laundry_pairs_delivered_weekly_input.addEventListener(
         "input",
@@ -1296,8 +1283,28 @@ async function laundryCalcSetup() {
           let sum_current = document.getElementById("sum_current");
           sum_current.innerText =
             "$" +
-            cleanPrice(laundry_current_annualized.innerText) +
-            cleanPrice(delivery_install_current_annualized.innerText);
+            (cleanPrice(laundry_current_annualized.innerText) +
+              cleanPrice(delivery_install_current_annualized.innerText));
+
+          let laundry_new_delta = document.getElementById("laundry_new_delta");
+
+          let laundry_new_annualized = document.getElementById(
+            "laundry_new_annualized"
+          );
+          laundry_new_annualized.innerText =
+            "$" +
+            cleanPrice(laundry_new_delta.innerText) *
+              52 *
+              laundry_pairs_delivered_weekly_input.value;
+
+          let sum_new = document.getElementById("sum_new");
+          let delivery_install_new_annualized = document.getElementById(
+            "delivery_install_new_annualized"
+          );
+          sum_new.innerText =
+            "$" +
+            (cleanPrice(laundry_new_annualized.innerText) +
+              cleanPrice(delivery_install_new_annualized.innerText));
         }
       );
     }
@@ -1397,75 +1404,17 @@ async function laundryCalcSetup() {
             cleanPrice(national_average_td_four_piece_laundry_calc[i].innerText)
           );
         }
-      }
 
-      let laundry_new_delta = document.getElementById("laundry_new_delta");
-
-      let total_national_average_four_piece_laundry_calc =
-        document.getElementById(
-          "total_national_average_four_piece_laundry_calc"
+        let laundry_new_delta = document.getElementById("laundry_new_delta");
+        let total_member_price_laundry_calc_current = document.getElementById(
+          "total_member_price_laundry_calc_current"
         );
 
-      laundry_new_delta.innerText =
-        "$" +
-        (cleanPrice(total_national_average_four_piece_laundry_calc.innerText) -
-          cleanPrice(total_member_price_laundry_calc_new.innerText));
-
-      let laundry_pairs_delivered_weekly_input_new = document.getElementById(
-        "laundry_pairs_delivered_weekly_new"
-      );
-      laundry_pairs_delivered_weekly_input_new.addEventListener(
-        "input",
-        function () {
-          let laundry_new_annualized = document.getElementById(
-            "laundry_new_annualized"
-          );
-          let laundry_new_delta = cleanPrice(
-            document.getElementById("laundry_new_delta").innerText
-          );
-          let annualized =
-            laundry_new_delta *
-            laundry_pairs_delivered_weekly_input_new.value *
-            52;
-          laundry_new_annualized.innerText = "$" + annualized;
-
-          let delivery_install_new_annualized = document.getElementById(
-            "delivery_install_new_annualized"
-          );
-
-          let sum_new = document.getElementById("sum_new");
-          sum_new.innerText =
-            "$" +
-            cleanPrice(laundry_new_annualized.innerText) +
-            cleanPrice(delivery_install_new_annualized.innerText);
-        }
-      );
-
-      let laundry_current_delta = document.getElementById(
-        "laundry_current_delta"
-      );
-
-      let laundry_delta_from_current_price = document.getElementById(
-        "laundry_delta_from_current_price"
-      );
-
-      laundry_delta_from_current_price.innerText =
-        "$" +
-        (cleanPrice(laundry_current_delta.innerText) -
-          cleanPrice(laundry_new_delta.innerText));
-
-      laundry_pairs_delivered_weekly_input_new.addEventListener(
-        "input",
-        function () {
-          let laundry_delta_from_current_price_annualized =
-            document.getElementById(
-              "laundry_delta_from_current_price_annualized"
-            );
-          laundry_delta_from_current_price_annualized.innerText =
-            cleanPrice(laundry_delta_from_current_price.innerText) *
-            laundry_pairs_delivered_weekly_input_new.value;
-        }
-      );
+        laundry_new_delta.innerText =
+          "$" +
+          (cleanPrice(total_member_price_laundry_calc_new.innerText) -
+            cleanPrice(total_member_price_laundry_calc_current.innerText));
+      }
     }
   );
 }
@@ -1558,7 +1507,7 @@ function downloadDataDeliveryInstall() {
     csv_arr.push(csv_sub_arr);
     csv_sub_arr = [];
   }
-  csv_arr.push([""])
+  csv_arr.push([""]);
 
   return csv_arr;
 
@@ -1667,7 +1616,8 @@ function downloadDataFourPiece() {
   let csv_sub_arr = [];
   csv_arr.push(["4 Piece Kitchen"]);
 
-  for (let i = 0; i < four_piece_kitchen_table.rows.length; i++) {
+
+  for (let i = 0; i < four_piece_kitchen_table.rows.length -1; i++) {
     for (let j = 0; j < 4; j++) {
       csv_sub_arr.push(four_piece_kitchen_table_item_data_text_part[i][j]);
     }
@@ -1684,54 +1634,25 @@ function downloadDataFourPiece() {
     "delivery_install_current_delta"
   ).innerText;
   let delivery_install_kitchens_delivered_weekly = document.getElementById(
-    "delivery_install_kitchens_delivered_weekly"
+    "delivery_install_kitchens_delivered_weekly_input"
   ).value;
-  let delivery_install_current_annualized = document.getElementById(
-    "delivery_install_current_annualized"
-  ).innerText;
-
-  csv_arr.push(
-    ["Current Delta From Average", delivery_install_current_delta],
-    ["Kitchens Delivered Weekly", delivery_install_kitchens_delivered_weekly],
-    ["Annualized", delivery_install_current_annualized]
-  );
-
-  let delivery_install_new_delta = document.getElementById(
+  let delivery_install_current_annualized = document.getElementById("delivery_install_current_annualized").innerText
+  let delivery_install_diff_between_member_current_and_new = document.getElementById(
     "delivery_install_new_delta"
   ).innerText;
-  let four_piece_delta_from_current_price = document.getElementById(
-    "four_piece_delta_from_current_price"
-  ).innerText;
-  let delivery_install_kitchens_delivered_weekly_new = document.getElementById(
-    "delivery_install_kitchens_delivered_weekly_new"
-  ).value;
+
   let delivery_install_new_annualized = document.getElementById(
     "delivery_install_new_annualized"
   ).innerText;
-  let delivery_install_delta_from_current_price_annualized =
-    document.getElementById(
-      "delivery_install_delta_from_current_price_annualized"
-    ).innerText;
 
   csv_arr.push(
-    [
-      "New Delta From Average",
-      delivery_install_new_delta,
-      "Delta From Current Price",
-      four_piece_delta_from_current_price,
-    ],
-    [
-      "Kitchens Delivered Weekly",
-      delivery_install_kitchens_delivered_weekly_new,
-    ],
-    [
-      "Annualized",
-      delivery_install_new_annualized,
-      "Annualized",
-      delivery_install_delta_from_current_price_annualized,
-    ]
+    ["Kitchens Delivered Weekly", delivery_install_kitchens_delivered_weekly],
+	["Current Delta From Average", delivery_install_current_delta],
+    ["Annualized", delivery_install_current_annualized],
+	["Difference between Member Current and New Price", delivery_install_diff_between_member_current_and_new],
+	["Annualized Additional Revenue", delivery_install_new_annualized],
   );
-  csv_arr.push([""])
+  csv_arr.push([""]);
 
   return csv_arr;
   // Use map function to traverse on each row
@@ -1807,17 +1728,24 @@ function downloadDataLaundry() {
   }
 
   let member_input_new_td_laundry_values = [];
-  let member_input_new_td_laundry =
-    document.getElementsByClassName("member_input_new_laundry");
+  let member_input_new_td_laundry = document.getElementsByClassName(
+    "member_input_new_laundry"
+  );
 
   for (let i = 0; i < member_input_new_td_laundry.length; i++) {
-    member_input_new_td_laundry_values.push(member_input_new_td_laundry[i].value);
+    member_input_new_td_laundry_values.push(
+      member_input_new_td_laundry[i].value
+    );
   }
 
   let difference_new_td_laundry_values = [];
-  let difference_new_td_laundry = document.getElementsByClassName("difference_new_td_laundry");
+  let difference_new_td_laundry = document.getElementsByClassName(
+    "difference_new_td_laundry"
+  );
   for (let i = 0; i < difference_new_td_laundry.length; i++) {
-    difference_new_td_laundry_values.push(difference_new_td_laundry[i].innerText);
+    difference_new_td_laundry_values.push(
+      difference_new_td_laundry[i].innerText
+    );
   }
 
   let csv_arr = [];
@@ -1836,8 +1764,8 @@ function downloadDataLaundry() {
     csv_arr.push(csv_sub_arr);
     csv_sub_arr = [];
   }
-  csv_arr.push([""])
-  return csv_arr
+  csv_arr.push([""]);
+  return csv_arr;
 
   // Use map function to traverse on each row
   var csv = csv_arr
@@ -1887,9 +1815,10 @@ function downloadDataLaundryCalc() {
     );
   }
 
-  let national_average_td_four_piece_laundry_calc = document.getElementsByClassName(
-    "national_average_td_four_piece_laundry_calc"
-  );
+  let national_average_td_four_piece_laundry_calc =
+    document.getElementsByClassName(
+      "national_average_td_four_piece_laundry_calc"
+    );
   let national_average_td_four_piece_laundry_calc_values = [];
   for (let i = 0; i < national_average_td_four_piece_laundry_calc.length; i++) {
     national_average_td_four_piece_laundry_calc_values.push(
@@ -1925,9 +1854,7 @@ function downloadDataLaundryCalc() {
   );
 
   for (let i = 0; i < dealers_new_laundry_calc.length; i++) {
-    dealers_new_laundry_calc_values.push(
-      dealers_new_laundry_calc[i].innerText
-    );
+    dealers_new_laundry_calc_values.push(dealers_new_laundry_calc[i].innerText);
   }
 
   let difference_new_td_laundry_calc_values = [];
@@ -1944,7 +1871,7 @@ function downloadDataLaundryCalc() {
   let csv_sub_arr = [];
   csv_arr.push(["Laundry Calculator"]);
 
-  for (let i = 0; i < laundry_calculator_table.rows.length; i++) {
+  for (let i = 0; i < laundry_calculator_table.rows.length -1; i++) {
     for (let j = 0; j < 4; j++) {
       csv_sub_arr.push(laundry_calculator_table_item_data_text_part[i][j]);
     }
@@ -1961,61 +1888,41 @@ function downloadDataLaundryCalc() {
     "laundry_current_delta"
   ).innerText;
   let laundry_pairs_delivered_weekly = document.getElementById(
-    "laundry_pairs_delivered_weekly"
+    "laundry_pairs_delivered_weekly_input"
   ).value;
   let laundry_current_annualized = document.getElementById(
     "laundry_current_annualized"
   ).innerText;
 
   csv_arr.push(
+	["Laundry Pairs Delivered Weekly", laundry_pairs_delivered_weekly],
     ["Current Delta From Average", laundry_current_delta],
-    ["Laundry Pairs Delivered Weekly", laundry_pairs_delivered_weekly],
     ["Annualized", laundry_current_annualized]
   );
 
-  let laundry_new_delta = document.getElementById(
-    "laundry_new_delta"
-  ).innerText;
-  let laundry_delta_from_current_price = document.getElementById(
-    "laundry_delta_from_current_price"
-  ).innerText;
-  let laundry_pairs_delivered_weekly_new = document.getElementById(
-    "laundry_pairs_delivered_weekly_new"
-  ).value;
+  let diff_between_member_current_new_price =
+    document.getElementById("laundry_new_delta").innerText;
   let laundry_new_annualized = document.getElementById(
     "laundry_new_annualized"
   ).innerText;
-  let laundry_delta_from_current_price_annualized =
-    document.getElementById(
-      "laundry_delta_from_current_price_annualized"
-    ).innerText;
+
 
   csv_arr.push(
     [
-      "New Delta From Average",
-      laundry_new_delta,
-      "Delta From Current Price",
-      laundry_delta_from_current_price,
-    ],
-    [
-      "Laundry Pairs Delivered Weekly",
-      laundry_pairs_delivered_weekly_new,
-    ],
-    [
-      "Annualized",
-      laundry_new_annualized,
-      "Annualized",
-      laundry_delta_from_current_price_annualized,
+      "Difference between Member Current and New Price",
+      diff_between_member_current_new_price,
+      "Annualized Additional Revenue",
+      laundry_new_annualized.innerText,
     ]
   );
 
   let sum_current = document.getElementById("sum_current").innerText;
-  csv_arr.push(["Total Current Potential Annualized", sum_current])
+  csv_arr.push(["Total Current Potential Annualized", sum_current]);
 
   let sum_new = document.getElementById("sum_new").innerText;
-  csv_arr.push(["Total New Potential Annualized", sum_new])
+  csv_arr.push(["Total New Potential Annualized", sum_new]);
 
-  return csv_arr
+  return csv_arr;
   // Use map function to traverse on each row
   var csv = csv_arr
     .map((item) => {
@@ -2038,7 +1945,11 @@ function consolidateCSV() {
   let laundry_data = downloadDataLaundry();
   let laundry_calc_data = downloadDataLaundryCalc();
 
-  let consolidated = delivery_install_data.concat(four_piece_data,laundry_data, laundry_calc_data)
+  let consolidated = delivery_install_data.concat(
+    four_piece_data,
+    laundry_data,
+    laundry_calc_data
+  );
   return consolidated;
 }
 
@@ -2065,7 +1976,7 @@ function downloadResults() {
     event: "download",
     user_email: user_email,
     total_opportunity_current: sum_current,
-    total_opportunity_new: sum_new
+    total_opportunity_new: sum_new,
   });
 }
 
@@ -2085,7 +1996,7 @@ function sendEmail() {
 
   let templateParams = {
     email: user_email,
-    results: results_url
+    results: results_url,
   };
 
   let templateParamsLead = {
@@ -2093,7 +2004,7 @@ function sendEmail() {
     email: user_email,
     results_current: sum_current,
     results_new: sum_new,
-    results_link: results_url
+    results_link: results_url,
   };
 
   //user email
@@ -2107,7 +2018,6 @@ function sendEmail() {
     }
   );
 
-  
   //lead email
   emailjs.send("service_6c8n4sr", "template_dljxoxl", templateParamsLead).then(
     (response) => {
@@ -2118,7 +2028,6 @@ function sendEmail() {
     }
   );
 
-
   dataLayer.push({
     event: "email_submitted",
     user_email: user_email,
@@ -2126,4 +2035,3 @@ function sendEmail() {
     total_opportunity_new: sum_new,
   });
 }
-
