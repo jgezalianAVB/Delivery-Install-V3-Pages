@@ -25,6 +25,8 @@ table {
 }
 
 #di_header {
+  background-color: red;
+  color: white;
   font-weight: 1000;
 }
 
@@ -46,7 +48,9 @@ table {
 
 #national_average {
   font-weight: 1000;
-  background-color: rgb(14, 191, 14);
+  /*background-color: rgb(14, 191, 14);*/
+  background-color: black;
+  color: white;
 }
 
 #dealer_curr,
@@ -59,13 +63,16 @@ table {
 }
 
 .data_table .item_data {
-  background-color: peachpuff;
+
+  background-color: lightgray;
+  /*background-color: peachpuff;*/
   text-align: center;
   vertical-align: middle;
 }
 
 .data_table .item_data_laundry {
-  background-color: lightblue;
+  background-color: lightgray;
+  /*background-color: lightblue;*/
   text-align: center;
   vertical-align: middle;
 }
@@ -75,7 +82,10 @@ table {
 .national_average_td_laundry,
 .national_average_td_laundry_calc, 
 .national_average_td_four_piece_laundry_calc {
-  background-color: rgb(14, 191, 14);
+  background-color: black;
+  color: white;
+  border: 1px solid white!important;
+  /*background-color: rgb(14, 191, 14);*/
 }
 
 .member_input_current_td,
@@ -94,7 +104,8 @@ table {
 .difference_current_td_laundry_calc,
 .dealers_new_laundry_calc,
 .difference_new_td_laundry_calc {
-  background-color: #ff0;
+  background-color: lightgray;
+  /*background-color: #ff0;*/
   text-align: center;
   vertical-align: bottom;
 }
