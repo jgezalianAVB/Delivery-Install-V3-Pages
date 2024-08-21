@@ -208,6 +208,19 @@
 		<p></p>
 	</div>
 	<script>
+    function sendHeightToParent() {
+        var height = document.documentElement.scrollHeight;
+        window.parent.postMessage(height, '*');
+    }
+
+    window.onload = function() {
+        sendHeightToParent();
+        window.onresize = function() {
+            sendHeightToParent();
+        };
+    };
+</script>
+	<script>
 		window.onload = async (event) => {
 			await deliveryInstallSetup();
 			await fourPieceKitchenSetup();
