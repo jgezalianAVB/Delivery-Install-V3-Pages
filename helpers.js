@@ -2010,7 +2010,7 @@ function sendEmail() {
   //user email
   emailjs.send("service_6c8n4sr", "template_f2n852j", templateParams).then(
     (response) => {
-      alert("Check Your Inbox For Links To Your Files");
+      alert("Thank you for emailing your results! Check your inbox for a link to download your personalized files.");
       console.log("SUCCESS!", response.status, response.text);
     },
     (error) => {
